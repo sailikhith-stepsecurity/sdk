@@ -18,9 +18,14 @@ jobs:
         if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'Branding') && github.repository == 'dotnet/sdk'
         runs-on: ubuntu-latest
         steps:
+        - name: Harden the runner (Audit all outbound calls)
+          uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+          with:
+            egress-policy: audit
+
         -   name: PR's only change is <VersionFeature> in eng/Versions.props
             id: only_version_feature_changed
-            uses: actions/github-script@v4
+            uses: actions/github-script@10b53a9ec6c222bb4ce97aa6bd2b5f739696b536 # v4.2.0
             with:
                 script: |
                     const otherChangesMessage = "❌ Changes in eng/Versions.props other than <VersionFeature> found";
@@ -52,7 +57,7 @@ jobs:
 
         -   name: Remove Branch Lockdown label from other PRs targeting this branch
             if: steps.only_version_feature_changed.outputs.only_version_feature_changed == 'true'
-            uses: actions/github-script@v4
+            uses: actions/github-script@10b53a9ec6c222bb4ce97aa6bd2b5f739696b536 # v4.2.0
             with:
                 script: |
                     const prs = await github.pulls.list({

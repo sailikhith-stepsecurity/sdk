@@ -55,6 +55,11 @@ jobs:
       base_branch: ${{ steps.resolve.outputs.base_branch }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: Evaluate comment command
         id: command-filter
         if: github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment'
@@ -192,6 +197,11 @@ jobs:
       has_report: ${{ steps.report.outputs.has_report }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: Configure Azure DevOps CLI
         run: az devops configure --defaults organization="https://dev.azure.com/${AZDO_ORG}" project="${AZDO_PROJECT}"
 
@@ -410,6 +420,11 @@ jobs:
       PR_NUMBER: ${{ needs.authorize.outputs.pr_number }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: Download size report
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
