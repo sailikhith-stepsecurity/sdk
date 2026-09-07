@@ -9,6 +9,11 @@ jobs:
   allowed-labels:
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: Return error if blocking labels are present in PR
         run: echo "Labels on this PR prevent it from being merged. Please contact the repo owners for more information." && exit 1
         if: ${{ contains(github.event.pull_request.labels.*.name, 'Branch Lockdown') || contains(github.event.pull_request.labels.*.name, 'DO NOT MERGE') || contains(github.event.pull_request.labels.*.name, 'Servicing-consider') || contains(github.event.pull_request.labels.*.name, 'Servicing-more-info') || contains(github.event.pull_request.labels.*.name, 'Servicing-rejected') }}

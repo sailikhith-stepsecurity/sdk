@@ -60,6 +60,11 @@ jobs:
     permissions:
       issues: read
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: "Download Issues"
         uses: dotnet/issue-labeler/download@46125e85e6a568dc712f358c39f35317366f5eed # v2.0.0
         with:
@@ -79,6 +84,11 @@ jobs:
     permissions:
       pull-requests: read
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: "Download Pull Requests"
         uses: dotnet/issue-labeler/download@46125e85e6a568dc712f358c39f35317366f5eed # v2.0.0
         with:
@@ -98,6 +108,11 @@ jobs:
     permissions: {}
     needs: download-issues
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: "Train Model for Issues"
         uses: dotnet/issue-labeler/train@46125e85e6a568dc712f358c39f35317366f5eed # v2.0.0
         with:
@@ -111,6 +126,11 @@ jobs:
     permissions: {}
     needs: download-pulls
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: "Train Model for Pull Requests"
         uses: dotnet/issue-labeler/train@46125e85e6a568dc712f358c39f35317366f5eed # v2.0.0
         with:
@@ -125,6 +145,11 @@ jobs:
       issues: read
     needs: train-issues
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: "Test Model for Issues"
         uses: dotnet/issue-labeler/test@46125e85e6a568dc712f358c39f35317366f5eed # v2.0.0
         with:
@@ -146,6 +171,11 @@ jobs:
       pull-requests: read
     needs: train-pulls
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
       - name: "Test Model for Pull Requests"
         uses: dotnet/issue-labeler/test@46125e85e6a568dc712f358c39f35317366f5eed # v2.0.0
         with:
